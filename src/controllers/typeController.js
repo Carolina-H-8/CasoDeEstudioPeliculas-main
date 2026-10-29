@@ -11,16 +11,13 @@ export const createType = (req, res) => {
 
     return handleRequest(
         res,
-        () => catalogService.createTypeService(req.body),
+        () => catalogService.create(prisma.type, req.body),
         201
     );
 };
-
-
-export const getTypes = (req, res) =>
-    handleRequest(res, () => catalogService.getTypesService());
-
-
+export const getType = (req, res) =>{
+    handleRequest(res, () => catalogService.getData(prisma.type));
+}
 // Actualizar Tipo
 export const updateType = (req, res) => {
     const { id } = req.params; 
@@ -34,18 +31,17 @@ export const updateType = (req, res) => {
 
     return handleRequest(
         res,
-        () => catalogService.updateTypeService(id, req.body),
+        () => catalogService.update(prisma.type,id, req.body),
         200 
     );
 };
-
 // Eliminar Tipo
 export const deleteType = (req, res) => {
     const { id } = req.params; 
 
     return handleRequest(
         res,
-        () => catalogService.deleteTypeService(id),
+        () => catalogService.deleteData(prisma.type,id),
         200 
     );
 };
