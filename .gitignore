@@ -1,0 +1,35 @@
+
+# Dependencias de Node.js
+node_modules/
+
+# Variables de entorno y credenciales
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Archivos generados por Prisma
+# Se ignoran solo los artefactos locales que no deban versionarse
+# (mantén el schema.prisma en Git)
+ 
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Configuración de editores
+.vscode/
+.idea/
+
+# Cobertura de pruebas
+coverage/
+
+# Archivos temporales
+tmp/
+temp/

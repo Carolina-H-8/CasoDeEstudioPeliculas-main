@@ -1,0 +1,90 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Genre {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String        @unique
+  status      Boolean       @default(true)
+  description String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  media       MediaGenre[]
+}
+
+model Director {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  status    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  media     Media[]
+}
+
+model ProductionCompany {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  slogan      String?
+  description String?
+  status      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  media       Media[]
+}
+
+model Type {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  media       Media[]
+}
+
+model Media {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  serial              String   @unique
+  title               String
+  synopsis            String?
+  url                 String   @unique
+  coverImage          String?
+  releaseYear         Int
+
+  typeId              String   @db.ObjectId
+  type                Type     @relation(fields: [typeId], references: [id])
+
+  directorId          String   @db.ObjectId
+  director            Director @relation(fields: [directorId], references: [id])
+
+  productionCompanyId String           @db.ObjectId
+  productionCompany   ProductionCompany @relation(fields: [productionCompanyId], references: [id])
+
+  genres              MediaGenre[]
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([typeId])
+  @@index([directorId])
+  @@index([productionCompanyId])
+}
+
+model MediaGenre {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+
+  mediaId String @db.ObjectId
+  genreId String @db.ObjectId
+
+  media   Media  @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  genre   Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@unique([mediaId, genreId])
+  @@index([genreId])
+}
+
