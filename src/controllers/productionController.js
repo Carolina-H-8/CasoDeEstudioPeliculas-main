@@ -1,4 +1,4 @@
-
+import { prisma } from '../lib/prisma.js';
 import * as catalogService from '../service/catalogService.js';
 import { handleRequest } from '../utils/handleRequest.js';
 // Compañías de producción
@@ -15,13 +15,13 @@ export const createProductionCompany = (req, res) => {
         201
     );
 };
-export const getProductionCompany= (req, res) => {
+export const getProductionCompany = (req, res) => {
     handleRequest(
         res,
         () => catalogService.getData(prisma.productionCompany)
     );
 };
-export const updateProductionCompany= (req, res) => {
+export const updateProductionCompany = (req, res) => {
     const { id } = req.params;
     if (!req.body || Object.keys(req.body).length === 0) {
         return res.status(400).json({
@@ -35,7 +35,7 @@ export const updateProductionCompany= (req, res) => {
         200
     );
 };
-export const deleteProductionCompany= (req, res) => {
+export const deleteProductionCompany = (req, res) => {
     const { id } = req.params
     return handleRequest(
         res,

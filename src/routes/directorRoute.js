@@ -1,12 +1,17 @@
 import { Router } from 'express';
-import { createDirector, getDirectors } from '../controllers/director.js';
-import { updateDirector } from '../service/catalogService.js';
+import {
+    createDirector,
+    getDirector,
+    updateDirector,
+    deleteDirector
+} from '../controllers/directorController.js';
+
 
 const router = Router();
-
 router.post('/', createDirector);
-router.get('/', getDirectors);
-router.put('/:id',updateDirector);
+router.get('/', getDirector);
+router.put('/:id', updateDirector);
+router.delete('/:id', deleteDirector);
 
 
 export default router;

@@ -1,4 +1,5 @@
 // Tipos
+import { prisma } from '../lib/prisma.js';
 import * as catalogService from '../service/catalogService.js';
 import { handleRequest } from '../utils/handleRequest.js';
 
