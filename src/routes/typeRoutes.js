@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createType, getTypes } from '../controllers/catalogController.js';
+import { createType, getTypes } from '../controllers/tipo.js';
 
 const router = Router();
 

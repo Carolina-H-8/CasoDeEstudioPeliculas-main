@@ -1,3 +1,6 @@
+
+import * as catalogService from '../service/catalogService.js';
+import { handleRequest } from '../utils/handleRequest.js';
 // Directores
 export const createDirector = (req, res) => {
     if (!req.body?.name) {

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createProductionCompany, getProductionCompanies } from '../controllers/catalogController.js';
+import { createProductionCompany, getProductionCompanies } from '../controllers/production.js';
 
 const router = Router();
 

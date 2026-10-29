@@ -1,3 +1,6 @@
+
+import * as catalogService from '../service/catalogService.js';
+import { handleRequest } from '../utils/handleRequest.js';
 // Compañías de producción
 export const createProductionCompany = (req, res) => {
     if (!req.body?.name) {

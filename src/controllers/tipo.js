@@ -1,4 +1,7 @@
 // Tipos
+import * as catalogService from '../service/catalogService.js';
+import { handleRequest } from '../utils/handleRequest.js';
+
 export const createType = (req, res) => {
     if (!req.body?.name) {
         return res.status(400).json({
