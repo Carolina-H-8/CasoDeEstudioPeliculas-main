@@ -28,3 +28,9 @@ export const createTypeService = async (data) =>
 
 export const getTypesService = async () =>
     prisma.type.findMany({ orderBy: { id: 'desc' } });
+
+export const updateTypeService = async (id, data) =>
+    prisma.type.update({ where: { id }, data });
+
+export const deleteTypeService = async (id) =>
+    prisma.type.delete({ where: { id } });
