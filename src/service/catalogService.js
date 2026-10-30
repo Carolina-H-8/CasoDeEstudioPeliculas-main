@@ -13,3 +13,21 @@ export const update = async(model,id,data)=>{
 export const deleteData = async(model, id)=>{
     return model.delete({where:{id}})
 }
+
+
+// Eliminar productora validando sus relaciones
+export const deleteProductionCompany = async (id) => {
+    const media = await prisma.media.findFirst({
+        where: {
+            productionCompanyId: id
+        }
+    });
+
+    if (media) {
+        throw new Error(
+            'No se puede eliminar la productora porque tiene películas asociadas'
+        );
+    }
+
+    return deleteData(prisma.productionCompany, id);
+};

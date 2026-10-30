@@ -39,7 +39,7 @@ export const deleteProductionCompany = (req, res) => {
     const { id } = req.params
     return handleRequest(
         res,
-        () => catalogService.deleteData(prisma.productionCompany, id),
+        () => catalogService.deleteProductionCompany(id),
         200
     );
 };
