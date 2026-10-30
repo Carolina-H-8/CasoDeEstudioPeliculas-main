@@ -83,3 +83,24 @@ export const getMedia = async (req, res) => {
         });
     }
 };
+
+export const updateMedia = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedMedia = await mediaService.updateMediaService(id, req.body);
+        res.json(updatedMedia);
+    } catch (error) {
+        res.status(400).json({ error: 'Error al actualizar la media', details: error.message });
+    }
+};
+
+// Eliminar una media
+export const deleteMedia = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await mediaService.deleteMediaService(id);
+        res.json({ message: 'Media eliminada correctamente' });
+    } catch (error) {
+        res.status(400).json({ error: 'Error al eliminar la media', details: error.message });
+    }
+};
