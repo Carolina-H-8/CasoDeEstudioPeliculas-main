@@ -111,3 +111,109 @@ export const getMediaService = async () => {
         }
     });
 };
+
+
+export const updateMediaService = async (id,data)=>{
+    const {
+        genreIds,
+        genreNames,
+        type,
+        director,
+        productionCompany,
+        ...mediaData
+    } = data;
+
+    const relations = {}
+
+    if(type !== undefined){
+        relations.type={
+            connect:{
+                id:(await prisma.type.upsert({
+                    where: { name: type },
+                    update: {},
+                    create: { name: type }
+                })).id
+            }
+        }
+    }
+    if (director !== undefined){
+        let directorRecord = await prisma.director.findFirst({
+            where:{name:director}
+        })
+        if (!directorRecord) {
+            directorRecord = await prisma.director.create({
+                data: { name: director }
+            });
+        }
+
+        relations.director = {
+            connect: { id: directorRecord.id }
+        };
+
+    }
+
+
+    if(productionCompany !== undefined){
+        let companyRecord = await prisma.productionCompany.findFirst({
+            where : {name:productionCompany}
+        })
+        if(!companyRecord){
+            companyRecord = await prisma.productionCompany.create({
+                data:{ name:productionCompany}
+            })
+        }
+        relations.productionCompany= {
+            connect:{id:companyRecord.id}
+        }
+    }
+
+
+    if(genreIds !== undefined || genreNames !== undefined){
+        const ids = [...(genreIds || [])];
+        for (const name of (genreNames || [])){
+            const genre = await prisma.genre.findUnique({
+                where : {name}
+            })
+
+            if(!genre){
+                throw new Error(`El genero "${name}" no existe`)
+            }
+            ids.push(genre.id);
+        }
+        const uniqueIds = [...new Set(ids)];
+
+        relations.genres = {
+            deleteMany: {},
+            create: uniqueIds.map((genreId) => ({
+                genre: {
+                    connect: { id: genreId }
+                }
+            }))
+        };
+
+    }
+
+    return prisma.media.update({
+        where: { id },
+        data: {
+            ...mediaData,
+            ...relations
+        },
+        include: {
+            type: true,
+            director: true,
+            productionCompany: true,
+            genres: {
+                include: { genre: true }
+            }
+        }
+    });
+
+
+}
+
+export const deleteMediaService = async (id) => {
+    return prisma.media.delete({
+        where: { id }
+    });
+};

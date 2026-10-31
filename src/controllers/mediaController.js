@@ -1,9 +1,9 @@
-
 import {
     createMediaService,
-    getMediaService
+    getMediaService,
+    updateMediaService,
+    deleteMediaService
 } from "../service/mediaService.js";
-
 export const createMedia = async (req, res) => {
     try {
         // Recibe los datos enviados por el cliente
@@ -87,8 +87,8 @@ export const getMedia = async (req, res) => {
 export const updateMedia = async (req, res) => {
     try {
         const { id } = req.params;
-        const updatedMedia = await mediaService.updateMediaService(id, req.body);
-        res.json(updatedMedia);
+        const updatedMedia = await updateMediaService(id, req.body);
+        return res.status(200).json(updatedMedia);
     } catch (error) {
         res.status(400).json({ error: 'Error al actualizar la media', details: error.message });
     }
@@ -98,7 +98,7 @@ export const updateMedia = async (req, res) => {
 export const deleteMedia = async (req, res) => {
     try {
         const { id } = req.params;
-        await mediaService.deleteMediaService(id);
+        await deleteMediaService(id);
         res.json({ message: 'Media eliminada correctamente' });
     } catch (error) {
         res.status(400).json({ error: 'Error al eliminar la media', details: error.message });
