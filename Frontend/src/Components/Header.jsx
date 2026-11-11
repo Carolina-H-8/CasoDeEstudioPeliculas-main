@@ -1,12 +1,21 @@
 export default function Header() {
     return (
-        <header className="w-full  p-6 text-white flex justify-between items-center px-8 ">
-            <h1 className="text-2xl font-bold text-red-500">Mi App</h1>
+        <header className="w-full  p-6 text-white px-8  ">
+            <section className="w-full h-14 flex justify-between ">
+                <div className="flex gap-2 items-center text-Neutral-50" >
+                    <img src="src/assets/Background.svg" alt="Media Icon" />
+                    <p className="font-semibold text-lg font-Jakarta">IU Digital </p>
+                    <p className="font-light">Cinema Admin</p>
+                </div>
+            </section>
 
-            <nav>
-                <ul className="flex gap-4">
-                    <li><a href="#" className="hover:underline">Inicio</a></li>
-                    <li><a href="#" className="hover:underline">Películas</a></li>
+            <nav className="w-full h-12 flex items-center font-Inter">
+                <ul className="flex gap-4 text-sm font-bold text-Neutral-50 ">
+                    <li><a href="#" className="Focus">Media</a></li>
+                    <li><a href="#" className="Focus">Generos</a></li>
+                    <li><a href="#" className="Focus">Directores</a></li>
+                    <li><a href="#" className="Focus">Productoras</a></li>
+                    <li><a href="#" className="Focus">Tipos</a></li>
                 </ul>
             </nav>
         </header>
