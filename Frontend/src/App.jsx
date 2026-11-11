@@ -1,12 +1,18 @@
-
+import Header from "./Components/Header.jsx"
 function App() {
   return (
-    <main className="w-screen h-screen  bg-blue-950 flex justify-center items-center">
-      <section className="w-full max-w-7xl border border-blue-950 shadow-2xl h-screen flex justify-center items-center">
-        <p className="text-5xl font-bold text-fuchsia-600 ">hola</p>
-      </section>
+    <div className="min-h-screen w-full bg-blue-950 flex flex-col items-center" >
+      <div className="w-full max-w-7xl flex-1 flex flex-col border border-blue-950 shadow-2xl">
+        <Header />
+        <main className="w-full flex-1 p-6" >
+          <h1 className="text-5xl text-red-600">hola</h1>
+        </main>
+
+      </div>
       
-    </main>
+    
+    </div>
+   
   )
 }
 
