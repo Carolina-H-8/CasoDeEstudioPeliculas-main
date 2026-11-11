@@ -196,7 +196,7 @@ A partir de ese momento se pueden probar los endpoints de la API utilizando Post
 Una vez instalados y configurados Node.js, Git y MongoDB, los comandos para preparar el proyecto son:
 
 ```bash
-git clone https://github.com/Carolina-H-8/CasoDeEstudioPeliculas.git
+git clone https://github.com/Carolina-H-8/CasoDeEstudioPeliculas-main
 
 cd CasoDeEstudioPeliculas
 
