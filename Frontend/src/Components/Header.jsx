@@ -1,6 +1,6 @@
 export default function Header() {
     return (
-        <header className="w-full  p-6 text-white px-8  ">
+        <header className="w-full pt-4 text-white ">
             <section className="w-full h-14 flex justify-between ">
                 <div className="flex gap-2 items-center text-Neutral-50" >
                     <img src="src/assets/Background.svg" alt="Media Icon" />
