@@ -120,6 +120,8 @@ export const updateMediaService = async (id,data)=>{
         type,
         director,
         productionCompany,
+        slogan,
+        description,
         ...mediaData
     } = data;
 
@@ -159,8 +161,20 @@ export const updateMediaService = async (id,data)=>{
         })
         if(!companyRecord){
             companyRecord = await prisma.productionCompany.create({
-                data:{ name:productionCompany}
+                data: {
+                    name: productionCompany,
+                    slogan,
+                    description
+}
             })
+        } else if (slogan !== undefined || description !== undefined){
+            companyRecord = await prisma.productionCompany.update({
+                where: { id: companyRecord.id },
+                data: {
+                    ...(slogan !== undefined && { slogan }),
+                    ...(description !== undefined && { description })
+                }
+            });
         }
         relations.productionCompany= {
             connect:{id:companyRecord.id}
