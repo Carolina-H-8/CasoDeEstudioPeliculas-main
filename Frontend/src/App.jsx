@@ -15,10 +15,14 @@ function App() {
 
   return (
     <div className="min-h-screen w-full px-6 bg-Neutral flex flex-col items-center" >
-      <Header
-        activeTab={activeTab}
-        onNavigate={setActiveTab}
-      />
+      <div className="w-full max-w-7xl flex flex-col  ">
+
+        <Header
+          activeTab={activeTab}
+          onNavigate={setActiveTab}
+        />
+      </div>
+      
 
       {pages[activeTab]}
     </div>
