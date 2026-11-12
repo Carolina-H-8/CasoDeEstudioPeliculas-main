@@ -1,5 +1,5 @@
 import { EditIcon, TrashIcon } from "./Icons";
-export default function GenreRow({ genre }) {
+export default function GenreRow({ genre, onEdit, onDelete }) {
     return (
         <tr className="transition-colors hover:bg-Neutral-2/20">
 
@@ -59,6 +59,7 @@ export default function GenreRow({ genre }) {
                 <div className="flex items-center justify-center gap-4">
                     <button
                         type="button"
+                        onClick={()=>onEdit(genre)}
                         aria-label={`Editar ${genre.name}`}
                         className="text-Neutral-50/40 hover:text-Primari"
                     >
@@ -66,6 +67,7 @@ export default function GenreRow({ genre }) {
                     </button>
                     <button
                         type="button"
+                        onClick={()=>onDelete(genre)}
                         aria-label={`Editar ${genre.name}`}
                         className="text-Neutral-50/40 hover:text-red-600"
                     >

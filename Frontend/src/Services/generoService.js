@@ -28,3 +28,23 @@ export const createGenre = async (genreData) => {
     throw error;
   }
 };
+
+export const updateGenre = async (id,data)=>{
+  const res = await fetch(`${API_URL}/genres/${id}`,
+    {
+      method:"PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if(!res.ok) throw new Error("Error al actualizar genero");
+    return await res.json();
+
+}
+
+export const deleteGenre = async (id) => {
+  const res = await fetch(`${API_URL}/genres/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Error al eliminar el género");
+  return await res.json();
+};
