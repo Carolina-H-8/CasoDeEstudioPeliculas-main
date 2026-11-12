@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import { getAllMedia } from "../test/MediaService";
+import { getAllMedia } from "../Services/mediaService";
 
 export function useMedia(){
     const [media,setMedia]=useState([]);

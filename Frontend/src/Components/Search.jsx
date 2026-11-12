@@ -1,7 +1,7 @@
-import ButtonAdd from "./ButtonAdd";
+
 import DropMenu from "./DropMenu";
 
-export default function Search(){
+export default function Search({ placeholder = "Buscar...", value, onChange, children }){
     return(
         <section className="bg-background w-full h-16 p-6 rounded-xl flex justify-between items-center gap-4 ">
             <div className="w-96 h-8 flex items-center relative bg-Neutral-50/20 rounded-lg font-Inter">
@@ -10,15 +10,17 @@ export default function Search(){
                     alt="icon-search" />
                 <input className="w-full h-16.5 pl-10 text-Neutral-50 text-md placeholder:text-[12px] placeholder:text-Neutral-50/80 placeholder:opacity-70 placeholder:leading-35"
                     type="text"
-                    placeholder="Buscar por título, director o serial..."
+                    value={value}
+                    onChange={onChange}
+                    placeholder={placeholder}
                 />
             </div>
             <div className="flex  gap-3">
                 <DropMenu name={"Genero: "}/>
                 <DropMenu name={"Tipo: "}/>
             </div>
-            <div>
-                <ButtonAdd/>
+            <div className="flex items-center gap-3">
+                {children}
             </div>
         </section>
     )

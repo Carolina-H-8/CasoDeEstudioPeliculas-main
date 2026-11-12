@@ -1,9 +1,8 @@
 import PageInfo from "../Components/PageInfo"
 import Search from "../Components/Search"
 import DataTable from "../Components/DataTable"
-//import { productions } from "../Data/MediaData"
 import MediaRow from "../Components/MediaRow"
-import { useMedia } from "../Hooks2/useMedia"
+import { useMedia } from "../Hooks/useMedia"
 export default function Media(){
     const columns = [
         { key: "title", label: "PÓSTER & TÍTULO" },
