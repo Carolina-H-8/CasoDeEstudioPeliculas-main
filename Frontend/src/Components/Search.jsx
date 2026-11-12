@@ -12,8 +12,9 @@ export default function Search(){
                     placeholder="Buscar por título, director o serial..."
                 />
             </div>
-            <div>
-                <DropMenu/>
+            <div className="flex  gap-3">
+                <DropMenu name={"Genero: "}/>
+                <DropMenu name={"Tipo: "}/>
             </div>
         </section>
     )
