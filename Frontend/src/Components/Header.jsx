@@ -1,4 +1,11 @@
-export default function Header() {
+export default function Header({ activeTab, onNavigate }) {
+    const tabs =[
+        "Media",
+        "Generos",
+        "Directores",
+        "Productoras",
+        "Tipos"
+    ]
     return (
         <header className="w-full pt-4 text-white ">
             <section className="w-full h-14 flex justify-between ">
@@ -11,11 +18,21 @@ export default function Header() {
 
             <nav className="w-full h-12 flex items-center font-Inter">
                 <ul className="flex gap-4 text-sm font-bold text-Neutral-50 ">
-                    <li><a href="#" className="Focus">Media</a></li>
-                    <li><a href="#" className="Focus">Generos</a></li>
-                    <li><a href="#" className="Focus">Directores</a></li>
-                    <li><a href="#" className="Focus">Productoras</a></li>
-                    <li><a href="#" className="Focus">Tipos</a></li>
+                    {tabs.map((tab)=>(
+                    <li key={tab}>
+                        <button
+                            type="button"
+                            onClick={() => onNavigate(tab)}
+                            className={`Focus ${activeTab === tab
+                                    ? "text-emerald-400 bg-Neutral-2"
+                                    : "hover:text-emerald-400 "
+                                }`}
+                        >
+                            {tab}
+                        </button>
+                    </li>
+
+                    ))}
                 </ul>
             </nav>
         </header>
