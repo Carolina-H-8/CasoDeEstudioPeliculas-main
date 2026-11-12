@@ -35,7 +35,7 @@ export default function DataTable({
                             {columns.map((column) => (
                                 <th
                                     key={column.key}
-                                    className={`px-4 py-4 font-semibold ${column.className || ""}`}
+                                    className={`px-9 py-4 font-semibold ${column.className || ""}`}
                                 >
                                     {column.label}
                                 </th>

@@ -1,9 +1,10 @@
+import ButtonAdd from "./ButtonAdd";
 import DropMenu from "./DropMenu";
 
 export default function Search(){
     return(
         <section className="bg-background w-full h-16 p-6 rounded-xl flex justify-between items-center gap-4 ">
-            <div className="w-full h-8 flex items-center relative bg-Neutral-50/20 rounded-lg font-Inter">
+            <div className="w-96 h-8 flex items-center relative bg-Neutral-50/20 rounded-lg font-Inter">
                 <img className="absolute pl-3 "
                     src="./src/assets/search.png"
                     alt="icon-search" />
@@ -15,6 +16,9 @@ export default function Search(){
             <div className="flex  gap-3">
                 <DropMenu name={"Genero: "}/>
                 <DropMenu name={"Tipo: "}/>
+            </div>
+            <div>
+                <ButtonAdd/>
             </div>
         </section>
     )
