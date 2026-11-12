@@ -1,4 +1,4 @@
-
+import { EditIcon, TrashIcon } from "./Icons";
 export default function GenreRow({ genre }) {
     return (
         <tr className="transition-colors hover:bg-Neutral-2/20">
@@ -7,16 +7,16 @@ export default function GenreRow({ genre }) {
             <td className="px-6 py-4">
                 <div className="flex items-center gap-3 min-w-60">
 
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-emerald-700">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-Primari">
                         <span className="text-lg">✦</span>
                     </div>
 
                     <div className="flex flex-col">
-                        <span className="text-base font-medium text-slate-800">
+                        <span className="text-base font-medium text-Neutral-50">
                             {genre.name}
                         </span>
 
-                        <span className="font-mono text-xs text-emerald-700">
+                        <span className="font-mono text-xs text-Primari">
                             {genre.code}
                         </span>
                     </div>
@@ -28,8 +28,8 @@ export default function GenreRow({ genre }) {
             <td className="px-4 py-4">
                 <span
                     className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ${genre.status === "Activo"
-                            ? "bg-emerald-100 text-emerald-800"
-                            : "bg-slate-100 text-slate-500"
+                            ? "bg-emerald-100 text-Primari"
+                            : "bg-Neutral-50 text-Neutral-2"
                         }`}
                 >
                     <span className="h-2 w-2 rounded-full bg-current" />
@@ -39,18 +39,18 @@ export default function GenreRow({ genre }) {
 
             {/* Descripción */}
             <td className="px-4 py-4 max-w-120">
-                <p className="text-sm text-slate-600 line-clamp-2">
+                <p className="text-sm text-Neutral-50/40 line-clamp-2">
                     {genre.description}
                 </p>
             </td>
 
             {/* Fecha creación */}
-            <td className="px-4 py-4 whitespace-nowrap font-mono text-sm text-slate-600">
+            <td className="px-4 py-4 whitespace-nowrap font-mono text-sm text-Neutral-50/40">
                 {genre.createdAt}
             </td>
 
             {/* Fecha actualización */}
-            <td className="px-4 py-4 whitespace-nowrap font-mono text-sm text-slate-600">
+            <td className="px-4 py-4 whitespace-nowrap font-mono text-sm text-Neutral-50/40">
                 {genre.updatedAt}
             </td>
 
@@ -60,14 +60,19 @@ export default function GenreRow({ genre }) {
                     <button
                         type="button"
                         aria-label={`Editar ${genre.name}`}
-                        className="text-slate-600 hover:text-emerald-700"
+                        className="text-Neutral-50/40 hover:text-Primari"
                     >
-                        ✎
+                        <EditIcon className="w-6 h-6" />
+                    </button>
+                    <button
+                        type="button"
+                        aria-label={`Editar ${genre.name}`}
+                        className="text-Neutral-50/40 hover:text-red-600"
+                    >
+                        <TrashIcon className="w-6 h-6" />
                     </button>
 
-                    <span className="text-slate-500">
-                        {genre.status === "Activo" ? "●" : "○"}
-                    </span>
+                    
                 </div>
             </td>
 

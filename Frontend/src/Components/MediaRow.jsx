@@ -6,16 +6,16 @@ export default function MediaRow({ media }) {
                 <img
                     src={media.poster || media.coverImage || "/images/placeholder.jpg"}
                     alt={media.title}
-                    className="w-10 h-14 object-cover rounded-lg bg-slate-800"
+                    className="w-10 h-14 object-cover rounded-lg bg-Neutral-2"
                 />
                 <div>
-                    <p className="font-semibold text-white">{media.title}</p>
-                    <p className="text-xs text-slate-400 line-clamp-1">{media.synopsis}</p>
+                    <p className="font-semibold text-Neutral-50">{media.title}</p>
+                    <p className="text-xs text-Neutral-50/40 line-clamp-1">{media.synopsis}</p>
                 </div>
             </td>
 
             {/* Serial */}
-            <td className="py-4 px-4 font-mono text-xs text-slate-400">
+            <td className="py-4 px-4 font-mono text-xs text-Neutral-50/40">
                 {media.serial}
             </td>
 
