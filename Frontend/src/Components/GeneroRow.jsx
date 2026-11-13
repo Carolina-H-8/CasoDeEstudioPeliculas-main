@@ -67,8 +67,8 @@ export default function GenreRow({ genre, onEdit, onDelete }) {
                     </button>
                     <button
                         type="button"
-                        onClick={()=>onDelete(genre.name)}
-                        aria-label={`Editar ${genre.name}`}
+                        onClick={()=>onDelete(genre)}
+                        aria-label={`Borrar ${genre}`}
                         className="text-Neutral-50/40 hover:text-red-600 hover:cursor-pointer"
                     >
                         <TrashIcon className="w-6 h-6" />
