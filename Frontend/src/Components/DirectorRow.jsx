@@ -2,13 +2,11 @@ import { EditIcon, TrashIcon } from "./Icons";
 
 export default function DirectorRow({ director, onEdit, onDelete }) {
 
-  
-
     return (
         <tr className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors">
             {/* Nombre */}
             <td className="py-4 px-4 font-medium text-white">
-                {director.names || director.name}
+                {director.name}
             </td>
 
             {/* Estado */}
@@ -37,7 +35,7 @@ export default function DirectorRow({ director, onEdit, onDelete }) {
                     <button
                         type="button"
                         onClick={() => onEdit(director)}
-                        aria-label={`Editar ${director.names || director.name}`}
+                        aria-label={`Editar ${director.name}`}
                         className="text-Neutral-50/40 hover:text-Primari transition-colors cursor-pointer"
                     >
                         <EditIcon className="w-6 h-6" />
@@ -46,7 +44,7 @@ export default function DirectorRow({ director, onEdit, onDelete }) {
                     <button
                         type="button"
                         onClick={() => onDelete(director)}
-                        aria-label={`Eliminar ${director.names || director.name}`}
+                        aria-label={`Eliminar ${director.name}`}
                         className="text-Neutral-50/40 hover:text-red-600 transition-colors cursor-pointer"
                     >
                         <TrashIcon className="w-6 h-6" />
