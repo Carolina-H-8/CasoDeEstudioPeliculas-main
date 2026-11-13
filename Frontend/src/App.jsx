@@ -1,16 +1,20 @@
 import Generos from "./Pages/Generos"
 import Media from "./Pages/Media"
+import Directores from "./Pages/Directores"
 import Header from "./Components/Header"
+import Produtora from "./Pages/Productora"
 import { useState } from "react"
+import Tipo from "./Pages/Tipo"
 
 function App() {
   const [activeTab, setActiveTab] = useState("Media");
   const pages = {
     Media: <Media />,
     Generos: <Generos />,
-    Directores: <h1>Modulo Directores</h1>,
-    Productoras: <h1>Modulo Productoras</h1>,
-    Tipos: <h1>Modulo Tipos</h1>
+    Directores: <Directores/>,
+    Productoras: <Produtora/>,
+    Tipos: <Tipo/>
+  
   };
 
   return (

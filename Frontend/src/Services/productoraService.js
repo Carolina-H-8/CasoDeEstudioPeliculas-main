@@ -2,7 +2,7 @@ const API_URL = 'http://localhost:3000/api';
 
 export const getProducers = async () => {
   try {
-    const response = await fetch(`${API_URL}/producers`);
+    const response = await fetch(`${API_URL}/production-companies`);
     if (!response.ok) throw new Error('Error al obtener las productoras');
     return await response.json();
   } catch (error) {
@@ -13,7 +13,7 @@ export const getProducers = async () => {
 
 export const createProducer = async (producerData) => {
   try {
-    const response = await fetch(`${API_URL}/producers`, {
+    const response = await fetch(`${API_URL}/production-companies`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ export const createProducer = async (producerData) => {
 };
 
 export const updateProducer = async (id, data) => {
-  const res = await fetch(`${API_URL}/producers/${id}`, {
+  const res = await fetch(`${API_URL}/production-companies/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -39,7 +39,7 @@ export const updateProducer = async (id, data) => {
 };
 
 export const deleteProducer = async (id) => {
-  const res = await fetch(`${API_URL}/producers/${id}`, {
+  const res = await fetch(`${API_URL}/production-companies/${id}`, {
     method: 'DELETE',
   });
   if (!res.ok) throw new Error('Error al eliminar la productora');

@@ -5,7 +5,7 @@ import GenreRow from "../Components/GeneroRow";
 import Search from "../Components/Search";
 import {useGenero} from "../Hooks/useGenero";
 import { useState } from "react";
-import GeneroModal from "../Components/GeneroModal";
+import CatalogModal from "../Components/CatalogModal";
 import ButtonAdd from "../Components/ButtonAdd"
 export default function Generos() {
 
@@ -50,7 +50,7 @@ export default function Generos() {
         );
         if (!confirmed) return;
 
-        const id = genre.id || genre._id;
+        const id = genre.id;
         await removeGenre(id);
     };
 
@@ -82,12 +82,15 @@ export default function Generos() {
                 )}
 
             </main>
-            <GeneroModal
+            <CatalogModal
                 key={selectedGenre?.id || selectedGenre?._id || "new"}
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSave}
-                genre={selectedGenre}
+                item={selectedGenre}
+                entityName="Género"
+                showDescription={true}
+                placeholder="Ej. Ciencia Ficción"
             />
         </div>
             
