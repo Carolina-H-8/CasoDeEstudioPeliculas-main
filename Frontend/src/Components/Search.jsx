@@ -2,7 +2,16 @@
 import DropMenu from "./DropMenu";
 import { SearchIcon } from "./Icons";
 
-export default function Search({ placeholder = "Buscar...", value, onChange, children }){
+export default function Search({ placeholder = "Buscar...",
+    value,
+    onChange,
+    generos = [],
+    tipos = [],
+    selectedGenre = "",
+    selectedType = "",
+    onGenreChange,
+    onTypeChange,
+    children, }) {
     return(
         <section className="bg-background w-full h-16 p-6 rounded-xl flex justify-between items-center gap-4 ">
             <section className="flex items-center gap-4">
@@ -18,8 +27,23 @@ export default function Search({ placeholder = "Buscar...", value, onChange, chi
                     
                 </div>
                 <div className="flex  gap-3">
-                    <DropMenu name={"Genero: "} />
-                    <DropMenu name={"Tipo: "} />
+                    {onGenreChange &&(
+                        <DropMenu
+                            name="Género: "
+                            options={generos}
+                            value={selectedGenre}
+                            onChange={onGenreChange}
+                        />
+                    )}
+                    
+                    {onTypeChange && (
+                        <DropMenu
+                            name="Tipo: "
+                            options={tipos}
+                            value={selectedType}
+                            onChange={onTypeChange}
+                        />
+                    )}
                 </div>
            </section>
             <div className="flex items-center gap-3">
