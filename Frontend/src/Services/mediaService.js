@@ -23,6 +23,21 @@ export const createMedia = async (mediaData)=>{
     return await response.json();
 }
 
+export const updateMedia = async (id, mediaData) => {
+    const response = await fetch(`${APIURL}/media/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(mediaData),
+    });
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || errorData.error || "Error al actualizar la producción");
+    }
+    return await response.json();
+};
+
 export const deleteMedia = async (id) => {
     const response = await fetch(`${APIURL}/media/${id}`, {
         method: "DELETE",

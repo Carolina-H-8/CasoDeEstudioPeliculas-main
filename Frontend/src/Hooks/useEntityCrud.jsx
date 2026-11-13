@@ -52,7 +52,7 @@ export function useEntityCrud({ getAll,
     }, [getAll, entityName]);
 
     const addItem = async (data) => {
-        if (!data?.name?.trim()) return false;
+        if (!data?.name?.trim() && !data?.title?.trim()) return false;
 
         try {
             setError(null);
