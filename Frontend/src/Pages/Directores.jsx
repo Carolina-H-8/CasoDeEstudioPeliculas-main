@@ -5,8 +5,9 @@ import ButtonAdd from "../Components/ButtonAdd"
 import DataTable from "../Components/DataTable"
 import DirectorRow from "../Components/DirectorRow";
 import CatalogModal from "../Components/CatalogModal";
-import { useDirector } from "../Hooks/useDirector";
-import { useState } from "react";
+import { getDirectors, createDirector, updateDirector, deleteDirector } from '../Services/directorService';
+import { useEntityCrud } from "../Hooks/useEntityCrud";
+import { useCrudModal } from "../Hooks/useCrudModal";
 export default function Directores() {
 
     
@@ -19,47 +20,38 @@ export default function Directores() {
         { key: "actions", label: "Acciones" }
     ];
 
-    const { directores, loading, error, addDirector, removeDirector, editDirector } = useDirector()
+   const { items: director,
+           loading,
+           error,
+           addItem,
+           editItem,
+           removeItem, } = useEntityCrud({
+               getAll: getDirectors,
+               createItem: createDirector,
+               updateItem: updateDirector,
+               deleteItem: deleteDirector,
+               entityName: "El Director",
+           });
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedDirector, setSelectedDirector] = useState(null);
-
-    const handleOpenCreate = () => {
-        setSelectedDirector(null);
-        setIsModalOpen(true);
-    };
-
-
-    // Abrir modal con los datos de la fila seleccionada
-    const handleOpenEdit = (director) => {
-        setSelectedDirector(director);
-        setIsModalOpen(true);
-    };
-
-    // Guardar cambios de edición
-    const handleSave = async (data) => {
-        if (selectedDirector) {
-            const id = selectedDirector.id || selectedDirector._id;
-            return await editDirector(id, data);
-        }
-        return await addDirector(data);
-    };
-
-  
-
-    // Confirmar y eliminar
-    const handleDelete = async (director) => {
-        const id = director?.id
-        if (!id) return;
-
-        const directorName = director.names || director.name;
-        const confirmed = window.confirm(
-            `¿Estás seguro de eliminar el director "${directorName}"?`
-        );
-        if (!confirmed) return;
-        await removeDirector(id);
-    };
-
+    const{
+        isModalOpen,
+        selectedItem,
+        handleOpenCreate,
+        handleOpenEdit,
+        handleClose,
+        handleSave,
+        handleDelete,
+    } = useCrudModal({
+        onAdd: addItem,
+        onEdit: editItem,
+        onRemove: removeItem,
+        entityLabel: "El Director",
+        formatPayload: (data) => ({
+            name: data.name.trim(),
+            ...(data.status && { status: data.status }),
+        }),
+    })
+   
 
     return (
         <div className="w-full h-32 max-w-7xl flex flex-col ">
@@ -84,7 +76,7 @@ export default function Directores() {
 
                 {!loading && !error &&(
                     <DataTable
-                        data={directores}
+                        data={director}
                         columns={columns}
                         renderRow={(director) => (
                             <DirectorRow key={director.id || director._id} director={director} onEdit={handleOpenEdit} onDelete={handleDelete} />
@@ -97,15 +89,15 @@ export default function Directores() {
 
             </main>
             <CatalogModal
-                            key={selectedDirector?.id || selectedDirector?._id || "new"}
-                            isOpen={isModalOpen}
-                            onClose={() => setIsModalOpen(false)}
-                            onSave={handleSave}
-                            item={selectedDirector}
-                            entityName="Directores"
-                            showDescription={false}
-                            placeholder="Ej. Christopher Nolan"
-                        />
+                key={selectedItem?.id || selectedItem?._id || "new"}
+                isOpen={isModalOpen}
+                onClose={() => handleClose(false)}
+                onSave={handleSave}
+                item={selectedItem}
+                entityName="Directores"
+                showDescription={false}
+                placeholder="Ej. Christopher Nolan"
+            />
         </div>
     )
 }

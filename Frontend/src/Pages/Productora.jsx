@@ -5,8 +5,9 @@ import ButtonAdd from "../Components/ButtonAdd"
 import CatalogModal from "../Components/CatalogModal";
 import DataTable from "../Components/DataTable";
 import ProductoraRow from "../Components/ProductoraRow"
-import { useProductora } from "../Hooks/useProductora"
-import { useState } from "react";
+import { useEntityCrud } from "../Hooks/useEntityCrud";
+import { getProducers, createProducer, updateProducer, deleteProducer } from '../Services/productoraService';
+import { useCrudModal } from "../Hooks/useCrudModal";
 export default function Productora() {
     const columns = [
         { key: "name", label: "Nombre" },
@@ -19,42 +20,40 @@ export default function Productora() {
     ];
 
 
-    const { productoras, loading, error, addProducer, editProducer, removeProducer, } = useProductora();
+     const { items: productora,
+            loading,
+            error,
+            addItem,
+            editItem,
+            removeItem, } = useEntityCrud({
+                getAll: getProducers,
+                createItem: createProducer,
+                updateItem: updateProducer,
+                deleteItem: deleteProducer,
+                entityName: "La Productora",
+            });
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedProdctora, setSelectedProductora] = useState(null);
+    const { isModalOpen,
+        selectedItem,
+        handleOpenCreate,
+        handleOpenEdit,
+        handleClose,
+        handleSave,
+        handleDelete,
+    } = useCrudModal({
+        onAdd: addItem,
+        onEdit: editItem,
+        onRemove: removeItem,
+        entityLabel: "La Productora",
+        formatPayload: (data) => ({
+            name: data.name.trim(),
+            ...(data.slogan?.trim() && { slogan: data.slogan.trim() }),
+            ...(data.description?.trim() && { description: data.description.trim() }),
+            ...(data.status && { status: data.status }),
+        }),
+        
 
-    const handleOpenCreate = () => {
-        setSelectedProductora(null);
-        setIsModalOpen(true);
-    };
-
-    // Abrir modal con los datos de la fila seleccionada
-    const handleOpenEdit = (productora) => {
-        setSelectedProductora(productora);
-        setIsModalOpen(true);
-    };
-
-    // Guardar cambios de edición
-    const handleSave = async (data) => {
-        if (selectedProdctora) {
-            const id = selectedProdctora.id || selectedProdctora._id;
-            return await editProducer(id, data);
-        }
-        return await addProducer(data);
-    };
-
-    // Confirmar y eliminar
-    const handleDelete = async (productora) => {
-        const confirmed = window.confirm(
-            `¿Estás seguro de eliminar el género "${productora.name}"?`
-        );
-        if (!confirmed) return;
-
-        const id = productora.id;
-        await removeProducer(id);
-    };
-
+    });
 
 
     return (
@@ -74,7 +73,7 @@ export default function Productora() {
 
                 {!loading && !error && (
                     <DataTable
-                        data={productoras}
+                        data={productora}
                         columns={columns}
                         renderRow={(productora) => (
                             <ProductoraRow key={productora.id || productora._id} productora={productora} onEdit={handleOpenEdit} onDelete={handleDelete} />
@@ -87,12 +86,13 @@ export default function Productora() {
 
             </main>
             <CatalogModal
-                key={selectedProdctora?.id || selectedProdctora?._id || "new"}
+                key={selectedItem?.id || selectedItem?._id || "new"}
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => handleClose(false)}
                 onSave={handleSave}
-                item={selectedProdctora}
+                item={selectedItem}
                 entityName="Productora"
+                showSlogan={true}
                 showDescription={true}
                 placeholder="Ej. Warner Bross"
             />

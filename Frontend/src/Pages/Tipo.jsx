@@ -5,8 +5,10 @@ import ButtonAdd from "../Components/ButtonAdd";
 import DataTable from "../Components/DataTable";
 import TipoRow from "../Components/TipoRow";
 import CatalogModal from "../Components/CatalogModal";
-import {useTipo} from "../Hooks/useTipo"
-import { useState } from "react";
+import { getTypes, createType, updateType, deleteType } from '../Services/tipoService';
+import { useEntityCrud } from '../Hooks/useEntityCrud';
+import { useCrudModal } from "../Hooks/useCrudModal";
+
 export default function Tipos() {
     const columns = [
         { key: "name", label: "Nombre" },
@@ -15,43 +17,40 @@ export default function Tipos() {
         { key: "updatedAt", label: "Fecha actualización" },
         { key: "actions", label: "Acciones" },
     ];
+    //Gestion del crud
+    const { items: tipos,
+        loading,
+        error,
+        addItem,
+        editItem,
+        removeItem, } = useEntityCrud({
+            getAll: getTypes,
+            createItem: createType,
+            updateItem: updateType,
+            deleteItem: deleteType,
+            entityName: "El Tipo",
+        });
+    //Gestion de modal y acciones
+    const {
+        isModalOpen,
+        selectedItem,
+        handleOpenCreate,
+        handleOpenEdit,
+        handleClose,
+        handleSave,
+        handleDelete,
+    } = useCrudModal({
+        onAdd: addItem,
+        onEdit: editItem,
+        onRemove: removeItem,
+        entityLabel: "El tipo",
+        formatPayload: (data) => ({
+            name: data.name.trim(),
+            ...(data.description?.trim() && { description: data.description.trim() }),
+        }),
+    });
 
-    const { tipos, loading, error, editType, removeType,addType } = useTipo();
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedTipo, setSelectedTipo] = useState(null);
-
-    const handleOpenCreate = () => {
-        setSelectedTipo(null);
-        setIsModalOpen(true);
-    };
-
-    // Abrir modal con los datos de la fila seleccionada
-    const handleOpenEdit = (tipo) => {
-        setSelectedTipo(tipo);
-        setIsModalOpen(true);
-    };
-
-    // Guardar cambios de edición
-    const handleSave = async (data) => {
-        if (selectedTipo) {
-            const id = selectedTipo.id || selectedTipo._id;
-            return await editType(id, data);
-        }
-        return await addType(data);
-    };
-
-    // Confirmar y eliminar
-    const handleDelete = async (tipo) => {
-        const confirmed = window.confirm(
-            `¿Estás seguro de eliminar el género "${tipo.name}"?`
-        );
-        if (!confirmed) return;
-
-        const id = tipo.id;
-        await removeType(id);
-    };
-
+    
 
     return (
         <div className="w-full h-32 max-w-7xl flex flex-col ">
@@ -81,11 +80,11 @@ export default function Tipos() {
                                 )}
             </main>
             <CatalogModal
-                            key={selectedTipo?.id || selectedTipo?._id || "new"}
+                            key={selectedItem?.id || selectedItem?._id || "new"}
                             isOpen={isModalOpen}
-                            onClose={() => setIsModalOpen(false)}
+                            onClose={() => handleClose(false)}
                             onSave={handleSave}
-                            item={selectedTipo}
+                            item={selectedItem}
                             entityName="Tipos"
                             showDescription={true}
                             placeholder="Ej. Documental"

@@ -3,8 +3,9 @@ import PageInfo from "../Components/PageInfo"
 import DataTable from "../Components/DataTable";
 import GenreRow from "../Components/GeneroRow";
 import Search from "../Components/Search";
-import {useGenero} from "../Hooks/useGenero";
-import { useState } from "react";
+import {useEntityCrud} from "../Hooks/useEntityCrud";
+import { getGenres, createGenre, updateGenre, deleteGenre } from '../Services/generoService';
+import { useCrudModal } from "../Hooks/useCrudModal";
 import CatalogModal from "../Components/CatalogModal";
 import ButtonAdd from "../Components/ButtonAdd"
 export default function Generos() {
@@ -17,42 +18,38 @@ export default function Generos() {
         { key: "updatedAt", label: "Fecha actualización" },
         { key: "actions", label: "Acciones" }
     ];
-    const { generos, loading, error, editGenre, removeGenre,addGenre } = useGenero();
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedGenre, setSelectedGenre] = useState(null);
-
-
-    const handleOpenCreate = () => {
-        setSelectedGenre(null);
-        setIsModalOpen(true);
-    };
-
-    // Abrir modal con los datos de la fila seleccionada
-    const handleOpenEdit = (genre) => {
-        setSelectedGenre(genre);
-        setIsModalOpen(true);
-    };
-
-    // Guardar cambios de edición
-    const handleSave = async (data) => {
-        if (selectedGenre) {
-            const id = selectedGenre.id || selectedGenre._id;
-            return await editGenre(id, data);
-        }
-        return await addGenre(data);
-    };
-
-    // Confirmar y eliminar
-    const handleDelete = async (genre) => {
-        const confirmed = window.confirm(
-            `¿Estás seguro de eliminar el género "${genre.name}"?`
-        );
-        if (!confirmed) return;
-
-        const id = genre.id;
-        await removeGenre(id);
-    };
+    const { items: genero,
+        loading,
+        error,
+        addItem,
+        editItem,
+        removeItem, } = useEntityCrud({
+            getAll: getGenres,
+            createItem: createGenre,
+            updateItem: updateGenre,
+            deleteItem: deleteGenre,
+            entityName: "El Genero",
+        });
+    
+    const{
+            isModalOpen,
+            selectedItem,
+            handleOpenCreate,
+            handleOpenEdit,
+            handleClose,
+            handleSave,
+            handleDelete,
+        } = useCrudModal({
+            onAdd: addItem,
+            onEdit: editItem,
+            onRemove: removeItem,
+            entityLabel: "El Genero",
+            formatPayload: (data) => ({
+                name: data.name.trim(),
+                ...(data.description?.trim() && { description: data.description.trim() }),
+            }),
+        })
 
 
     return (
@@ -70,7 +67,7 @@ export default function Generos() {
                 )}
                 {!loading && !error &&(
                     <DataTable
-                        data={generos}
+                        data={genero}
                         columns={columns}
                         renderRow={(genre) => (
                             <GenreRow
@@ -83,11 +80,11 @@ export default function Generos() {
 
             </main>
             <CatalogModal
-                key={selectedGenre?.id || selectedGenre?._id || "new"}
+                key={selectedItem?.id || selectedItem?._id || "new"}
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => handleClose(false)}
                 onSave={handleSave}
-                item={selectedGenre}
+                item={selectedItem}
                 entityName="Género"
                 showDescription={true}
                 placeholder="Ej. Ciencia Ficción"
