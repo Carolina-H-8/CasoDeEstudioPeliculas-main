@@ -5,8 +5,10 @@ import ButtonAdd from "../Components/ButtonAdd";
 import DataTable from "../Components/DataTable";
 import TipoRow from "../Components/TipoRow";
 import CatalogModal from "../Components/CatalogModal";
+import { getTypes, createType, updateType, deleteType } from '../Services/tipoService';
+import { useEntityCrud } from '../Hooks/useEntityCrud';
 import { useCrudModal } from "../Hooks/useCrudModal";
-import {useTipo} from "../Hooks/useTipo"
+
 export default function Tipos() {
     const columns = [
         { key: "name", label: "Nombre" },
@@ -15,7 +17,20 @@ export default function Tipos() {
         { key: "updatedAt", label: "Fecha actualización" },
         { key: "actions", label: "Acciones" },
     ];
-    const { tipos, loading, error, editType, removeType,addType } = useTipo();
+    //Gestion del crud
+    const { items: tipos,
+        loading,
+        error,
+        addItem,
+        editItem,
+        removeItem, } = useEntityCrud({
+            getAll: getTypes,
+            createItem: createType,
+            updateItem: updateType,
+            deleteItem: deleteType,
+            entityName: "El Tipo",
+        });
+    //Gestion de modal y acciones
     const {
         isModalOpen,
         selectedItem,
@@ -25,10 +40,14 @@ export default function Tipos() {
         handleSave,
         handleDelete,
     } = useCrudModal({
-        onAdd: addType,
-        onEdit: editType,
-        onRemove: removeType,
+        onAdd: addItem,
+        onEdit: editItem,
+        onRemove: removeItem,
         entityLabel: "El tipo",
+        formatPayload: (data) => ({
+            name: data.name.trim(),
+            ...(data.description?.trim() && { description: data.description.trim() }),
+        }),
     });
 
     

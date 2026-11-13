@@ -5,7 +5,8 @@ import ButtonAdd from "../Components/ButtonAdd"
 import DataTable from "../Components/DataTable"
 import DirectorRow from "../Components/DirectorRow";
 import CatalogModal from "../Components/CatalogModal";
-import { useDirector } from "../Hooks/useDirector";
+import { getDirectors, createDirector, updateDirector, deleteDirector } from '../Services/directorService';
+import { useEntityCrud } from "../Hooks/useEntityCrud";
 import { useCrudModal } from "../Hooks/useCrudModal";
 export default function Directores() {
 
@@ -19,7 +20,18 @@ export default function Directores() {
         { key: "actions", label: "Acciones" }
     ];
 
-    const { directores, loading, error, addDirector, removeDirector, editDirector } = useDirector()
+   const { items: director,
+           loading,
+           error,
+           addItem,
+           editItem,
+           removeItem, } = useEntityCrud({
+               getAll: getDirectors,
+               createItem: createDirector,
+               updateItem: updateDirector,
+               deleteItem: deleteDirector,
+               entityName: "El Director",
+           });
 
     const{
         isModalOpen,
@@ -30,13 +42,16 @@ export default function Directores() {
         handleSave,
         handleDelete,
     } = useCrudModal({
-        onAdd: addDirector,
-        onEdit: editDirector,
-        onRemove: removeDirector,
+        onAdd: addItem,
+        onEdit: editItem,
+        onRemove: removeItem,
         entityLabel: "El Director",
+        formatPayload: (data) => ({
+            name: data.name.trim(),
+            ...(data.status && { status: data.status }),
+        }),
     })
    
-
 
     return (
         <div className="w-full h-32 max-w-7xl flex flex-col ">
@@ -61,7 +76,7 @@ export default function Directores() {
 
                 {!loading && !error &&(
                     <DataTable
-                        data={directores}
+                        data={director}
                         columns={columns}
                         renderRow={(director) => (
                             <DirectorRow key={director.id || director._id} director={director} onEdit={handleOpenEdit} onDelete={handleDelete} />
@@ -74,15 +89,15 @@ export default function Directores() {
 
             </main>
             <CatalogModal
-                            key={selectedItem?.id || selectedItem?._id || "new"}
-                            isOpen={isModalOpen}
-                            onClose={() => handleClose(false)}
-                            onSave={handleSave}
-                            item={selectedItem}
-                            entityName="Directores"
-                            showDescription={false}
-                            placeholder="Ej. Christopher Nolan"
-                        />
+                key={selectedItem?.id || selectedItem?._id || "new"}
+                isOpen={isModalOpen}
+                onClose={() => handleClose(false)}
+                onSave={handleSave}
+                item={selectedItem}
+                entityName="Directores"
+                showDescription={false}
+                placeholder="Ej. Christopher Nolan"
+            />
         </div>
     )
 }

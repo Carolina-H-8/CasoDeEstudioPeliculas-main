@@ -3,7 +3,8 @@ import PageInfo from "../Components/PageInfo"
 import DataTable from "../Components/DataTable";
 import GenreRow from "../Components/GeneroRow";
 import Search from "../Components/Search";
-import {useGenero} from "../Hooks/useGenero";
+import {useEntityCrud} from "../Hooks/useEntityCrud";
+import { getGenres, createGenre, updateGenre, deleteGenre } from '../Services/generoService';
 import { useCrudModal } from "../Hooks/useCrudModal";
 import CatalogModal from "../Components/CatalogModal";
 import ButtonAdd from "../Components/ButtonAdd"
@@ -17,7 +18,20 @@ export default function Generos() {
         { key: "updatedAt", label: "Fecha actualización" },
         { key: "actions", label: "Acciones" }
     ];
-    const { generos, loading, error, editGenre, removeGenre,addGenre } = useGenero();
+
+    const { items: genero,
+        loading,
+        error,
+        addItem,
+        editItem,
+        removeItem, } = useEntityCrud({
+            getAll: getGenres,
+            createItem: createGenre,
+            updateItem: updateGenre,
+            deleteItem: deleteGenre,
+            entityName: "El Genero",
+        });
+    
     const{
             isModalOpen,
             selectedItem,
@@ -27,10 +41,14 @@ export default function Generos() {
             handleSave,
             handleDelete,
         } = useCrudModal({
-            onAdd: addGenre,
-            onEdit: editGenre,
-            onRemove: removeGenre,
+            onAdd: addItem,
+            onEdit: editItem,
+            onRemove: removeItem,
             entityLabel: "El Genero",
+            formatPayload: (data) => ({
+                name: data.name.trim(),
+                ...(data.description?.trim() && { description: data.description.trim() }),
+            }),
         })
 
 
@@ -49,7 +67,7 @@ export default function Generos() {
                 )}
                 {!loading && !error &&(
                     <DataTable
-                        data={generos}
+                        data={genero}
                         columns={columns}
                         renderRow={(genre) => (
                             <GenreRow
