@@ -65,7 +65,7 @@ export default function CatalogModal({
                     {showDescription && (
                         <div>
                             <label className="block text-xs text-Neutral-50 mb-1">
-                                Descripción narrativa
+                                Descripción 
                             </label>
                             <textarea
                                 rows="3"

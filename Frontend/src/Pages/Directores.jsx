@@ -6,7 +6,7 @@ import DataTable from "../Components/DataTable"
 import DirectorRow from "../Components/DirectorRow";
 import CatalogModal from "../Components/CatalogModal";
 import { useDirector } from "../Hooks/useDirector";
-import { useState } from "react";
+import { useCrudModal } from "../Hooks/useCrudModal";
 export default function Directores() {
 
     
@@ -21,44 +21,21 @@ export default function Directores() {
 
     const { directores, loading, error, addDirector, removeDirector, editDirector } = useDirector()
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedDirector, setSelectedDirector] = useState(null);
-
-    const handleOpenCreate = () => {
-        setSelectedDirector(null);
-        setIsModalOpen(true);
-    };
-
-
-    // Abrir modal con los datos de la fila seleccionada
-    const handleOpenEdit = (director) => {
-        setSelectedDirector(director);
-        setIsModalOpen(true);
-    };
-
-    // Guardar cambios de edición
-    const handleSave = async (data) => {
-        if (selectedDirector) {
-            const id = selectedDirector.id || selectedDirector._id;
-            return await editDirector(id, data);
-        }
-        return await addDirector(data);
-    };
-
-  
-
-    // Confirmar y eliminar
-    const handleDelete = async (director) => {
-        const id = director?.id
-        if (!id) return;
-
-        const directorName = director.names || director.name;
-        const confirmed = window.confirm(
-            `¿Estás seguro de eliminar el director "${directorName}"?`
-        );
-        if (!confirmed) return;
-        await removeDirector(id);
-    };
+    const{
+        isModalOpen,
+        selectedItem,
+        handleOpenCreate,
+        handleOpenEdit,
+        handleClose,
+        handleSave,
+        handleDelete,
+    } = useCrudModal({
+        onAdd: addDirector,
+        onEdit: editDirector,
+        onRemove: removeDirector,
+        entityLabel: "El Director",
+    })
+   
 
 
     return (
@@ -97,11 +74,11 @@ export default function Directores() {
 
             </main>
             <CatalogModal
-                            key={selectedDirector?.id || selectedDirector?._id || "new"}
+                            key={selectedItem?.id || selectedItem?._id || "new"}
                             isOpen={isModalOpen}
-                            onClose={() => setIsModalOpen(false)}
+                            onClose={() => handleClose(false)}
                             onSave={handleSave}
-                            item={selectedDirector}
+                            item={selectedItem}
                             entityName="Directores"
                             showDescription={false}
                             placeholder="Ej. Christopher Nolan"

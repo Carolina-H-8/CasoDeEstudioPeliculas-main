@@ -6,7 +6,7 @@ import CatalogModal from "../Components/CatalogModal";
 import DataTable from "../Components/DataTable";
 import ProductoraRow from "../Components/ProductoraRow"
 import { useProductora } from "../Hooks/useProductora"
-import { useState } from "react";
+import { useCrudModal } from "../Hooks/useCrudModal";
 export default function Productora() {
     const columns = [
         { key: "name", label: "Nombre" },
@@ -21,40 +21,19 @@ export default function Productora() {
 
     const { productoras, loading, error, addProducer, editProducer, removeProducer, } = useProductora();
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedProdctora, setSelectedProductora] = useState(null);
-
-    const handleOpenCreate = () => {
-        setSelectedProductora(null);
-        setIsModalOpen(true);
-    };
-
-    // Abrir modal con los datos de la fila seleccionada
-    const handleOpenEdit = (productora) => {
-        setSelectedProductora(productora);
-        setIsModalOpen(true);
-    };
-
-    // Guardar cambios de edición
-    const handleSave = async (data) => {
-        if (selectedProdctora) {
-            const id = selectedProdctora.id || selectedProdctora._id;
-            return await editProducer(id, data);
-        }
-        return await addProducer(data);
-    };
-
-    // Confirmar y eliminar
-    const handleDelete = async (productora) => {
-        const confirmed = window.confirm(
-            `¿Estás seguro de eliminar el género "${productora.name}"?`
-        );
-        if (!confirmed) return;
-
-        const id = productora.id;
-        await removeProducer(id);
-    };
-
+    const { isModalOpen,
+        selectedItem,
+        handleOpenCreate,
+        handleOpenEdit,
+        handleClose,
+        handleSave,
+        handleDelete,
+    } = useCrudModal({
+        onAdd: addProducer,
+        onEdit: editProducer,
+        onRemove: removeProducer,
+        entityLabel: "La Productora",
+    });
 
 
     return (
@@ -87,11 +66,11 @@ export default function Productora() {
 
             </main>
             <CatalogModal
-                key={selectedProdctora?.id || selectedProdctora?._id || "new"}
+                key={selectedItem?.id || selectedItem?._id || "new"}
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => handleClose(false)}
                 onSave={handleSave}
-                item={selectedProdctora}
+                item={selectedItem}
                 entityName="Productora"
                 showDescription={true}
                 placeholder="Ej. Warner Bross"

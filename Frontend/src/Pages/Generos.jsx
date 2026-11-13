@@ -4,7 +4,7 @@ import DataTable from "../Components/DataTable";
 import GenreRow from "../Components/GeneroRow";
 import Search from "../Components/Search";
 import {useGenero} from "../Hooks/useGenero";
-import { useState } from "react";
+import { useCrudModal } from "../Hooks/useCrudModal";
 import CatalogModal from "../Components/CatalogModal";
 import ButtonAdd from "../Components/ButtonAdd"
 export default function Generos() {
@@ -18,41 +18,20 @@ export default function Generos() {
         { key: "actions", label: "Acciones" }
     ];
     const { generos, loading, error, editGenre, removeGenre,addGenre } = useGenero();
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedGenre, setSelectedGenre] = useState(null);
-
-
-    const handleOpenCreate = () => {
-        setSelectedGenre(null);
-        setIsModalOpen(true);
-    };
-
-    // Abrir modal con los datos de la fila seleccionada
-    const handleOpenEdit = (genre) => {
-        setSelectedGenre(genre);
-        setIsModalOpen(true);
-    };
-
-    // Guardar cambios de edición
-    const handleSave = async (data) => {
-        if (selectedGenre) {
-            const id = selectedGenre.id || selectedGenre._id;
-            return await editGenre(id, data);
-        }
-        return await addGenre(data);
-    };
-
-    // Confirmar y eliminar
-    const handleDelete = async (genre) => {
-        const confirmed = window.confirm(
-            `¿Estás seguro de eliminar el género "${genre.name}"?`
-        );
-        if (!confirmed) return;
-
-        const id = genre.id;
-        await removeGenre(id);
-    };
+    const{
+            isModalOpen,
+            selectedItem,
+            handleOpenCreate,
+            handleOpenEdit,
+            handleClose,
+            handleSave,
+            handleDelete,
+        } = useCrudModal({
+            onAdd: addGenre,
+            onEdit: editGenre,
+            onRemove: removeGenre,
+            entityLabel: "El Genero",
+        })
 
 
     return (
@@ -83,11 +62,11 @@ export default function Generos() {
 
             </main>
             <CatalogModal
-                key={selectedGenre?.id || selectedGenre?._id || "new"}
+                key={selectedItem?.id || selectedItem?._id || "new"}
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => handleClose(false)}
                 onSave={handleSave}
-                item={selectedGenre}
+                item={selectedItem}
                 entityName="Género"
                 showDescription={true}
                 placeholder="Ej. Ciencia Ficción"
