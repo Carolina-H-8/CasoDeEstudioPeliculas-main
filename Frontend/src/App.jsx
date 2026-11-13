@@ -4,7 +4,7 @@ import Directores from "./Pages/Directores"
 import Header from "./Components/Header"
 import Produtora from "./Pages/Productora"
 import { useState } from "react"
-import Tipos from "./Pages/Tipos"
+import Tipo from "./Pages/Tipo"
 
 function App() {
   const [activeTab, setActiveTab] = useState("Media");
@@ -13,7 +13,7 @@ function App() {
     Generos: <Generos />,
     Directores: <Directores/>,
     Productoras: <Produtora/>,
-    Tipos: <Tipos/>
+    Tipos: <Tipo/>
   
   };
 
