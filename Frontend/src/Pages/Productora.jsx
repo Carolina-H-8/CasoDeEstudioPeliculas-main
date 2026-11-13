@@ -92,6 +92,7 @@ export default function Productora() {
                 onSave={handleSave}
                 item={selectedItem}
                 entityName="Productora"
+                showSlogan={true}
                 showDescription={true}
                 placeholder="Ej. Warner Bross"
             />

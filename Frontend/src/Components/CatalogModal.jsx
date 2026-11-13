@@ -7,10 +7,12 @@ export default function CatalogModal({
     item = null,
     entityName = "Registro", // Ej: "Género", "Director", "Tipo"
     showDescription = false,
+    showSlogan = false,
     placeholder = "Escribe el nombre...",
 }) {
     // Soporta tanto item.name (Géneros) como item.names (si tu modelo Director usa 'names')
     const [name, setName] = useState(item?.name || item?.names || "");
+    const [slogan, setSlogan] = useState(item?.slogan || "");
     const [description, setDescription] = useState(item?.description || "");
     const [saving, setSaving] = useState(false);
 
@@ -24,10 +26,11 @@ export default function CatalogModal({
 
         setSaving(true);
         try {
-            // Construye el payload dinámicamente según si usa descripción o no
-            const payload = showDescription
-                ? { name: name.trim(), description: description.trim() }
-                : { name: name.trim() };
+            const payload = {
+                name: name.trim(),
+                ...(showSlogan && { slogan: slogan.trim() }),
+                ...(showDescription && { description: description.trim() }),
+            };
 
             const success = await onSave(payload);
             if (success) {
@@ -61,6 +64,21 @@ export default function CatalogModal({
                             required
                         />
                     </div>
+                    {showSlogan &&(
+                        <div>
+                            <label className="block text-xs text-Neutral-50 mb-1">
+                                Slogan
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Ej: Donde nacen las grandes historias..."
+                                value={slogan}
+                                onChange={(e) => setSlogan(e.target.value)}
+                                className="w-full rounded-xl bg-Neutral/90 border border-Neutral-50/40 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-Primari"
+                            />
+                        </div>
+
+                    )}
 
                     {showDescription && (
                         <div>
