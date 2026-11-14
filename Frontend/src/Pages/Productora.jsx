@@ -20,18 +20,18 @@ export default function Productora() {
     ];
 
 
-     const { items: productora,
-            loading,
-            error,
-            addItem,
-            editItem,
-            removeItem, } = useEntityCrud({
-                getAll: getProducers,
-                createItem: createProducer,
-                updateItem: updateProducer,
-                deleteItem: deleteProducer,
-                entityName: "La Productora",
-            });
+    const { items: productora,
+        loading,
+        error,
+        addItem,
+        editItem,
+        removeItem, } = useEntityCrud({
+            getAll: getProducers,
+            createItem: createProducer,
+            updateItem: updateProducer,
+            deleteItem: deleteProducer,
+            entityName: "La Productora",
+        });
 
     const { isModalOpen,
         selectedItem,
@@ -51,7 +51,7 @@ export default function Productora() {
             ...(data.description?.trim() && { description: data.description.trim() }),
             ...(data.status && { status: data.status }),
         }),
-        
+
 
     });
 
