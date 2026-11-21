@@ -60,7 +60,7 @@ export default function Productora() {
         <div className="w-full h-32 max-w-7xl flex flex-col ">
             
             <main className="w-full flex flex-col gap-8" >
-                <PageInfo title={"REPOSITORIO DIGITAL INSTITUCIONAL"} name={'Gestión de Productoras'} text={"Catálogo audiovisual de películas, series y producciones académicas de la IU Digital de Antioquia."} />
+                <PageInfo badge={"REPOSITORIO DIGITAL INSTITUCIONAL"} title={'Gestión de Productoras'} description={"Catálogo audiovisual de películas, series y producciones académicas de la IU Digital de Antioquia."} />
                 <Search placeholder="Buscar Productora por nombre o descripción...">
                     <ButtonAdd onClick={handleOpenCreate} label="Nueva Productra" />
                 </Search>
