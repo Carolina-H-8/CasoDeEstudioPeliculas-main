@@ -80,51 +80,76 @@ export function useMediaPage() {
     });
 
     // Enriquecimiento + Filtrado memorizado
+    const enrichedMedia = useMemo(() => {
+        return (media || []).map((item) => {
+            const foundType = catalogs.tipos.find((t) => (t.id || t._id) === item.typeId);
+            const foundDirector = catalogs.directores.find((d) => (d.id || d._id) === item.directorId);
+            const foundCompany = catalogs.productoras.find((p) => (p.id || p._id) === item.productionCompanyId);
+
+            return {
+                ...item,
+                type: item.type?.name ? item.type : foundType || item.type,
+                director:
+                    item.director?.name || item.director?.names
+                        ? item.director
+                        : foundDirector || item.director,
+                productionCompany: item.productionCompany?.name
+                    ? item.productionCompany
+                    : foundCompany || item.productionCompany,
+            };
+        });
+    }, [media, catalogs]);
+
+    // 2. Calcular totales reales de Películas y Series
+    const stats = useMemo(() => {
+        const normalize = (str) =>
+            String(str || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim();
+
+        let peliculas = 0;
+        let series = 0;
+
+        enrichedMedia.forEach((item) => {
+            const typeName = normalize(item.type?.name || item.type);
+            if (typeName.includes("pelicula")) peliculas++;
+            if (typeName.includes("serie")) series++;
+        });
+
+        return { peliculas, series };
+    }, [enrichedMedia]);
+
+    // 3. Filtrar sobre la lista ya enriquecida
     const filteredMedia = useMemo(() => {
         const term = searchTerm.toLowerCase();
 
-        return (media || [])
-            .map((item) => {
-                const foundType = catalogs.tipos.find((t) => (t.id || t._id) === item.typeId);
-                const foundDirector = catalogs.directores.find((d) => (d.id || d._id) === item.directorId);
-                const foundCompany = catalogs.productoras.find((p) => (p.id || p._id) === item.productionCompanyId);
+        return enrichedMedia.filter((item) => {
+            const matchesText =
+                !term ||
+                item.title?.toLowerCase().includes(term) ||
+                item.serial?.toLowerCase().includes(term) ||
+                (item.director?.name || item.director?.names || "").toLowerCase().includes(term) ||
+                (item.productionCompany?.name || "").toLowerCase().includes(term);
 
-                return {
-                    ...item,
-                    type: item.type?.name ? item.type : foundType || item.type,
-                    director:
-                        item.director?.name || item.director?.names
-                            ? item.director
-                            : foundDirector || item.director,
-                    productionCompany: item.productionCompany?.name
-                        ? item.productionCompany
-                        : foundCompany || item.productionCompany,
-                };
-            })
-            .filter((item) => {
-                const matchesText =
-                    !term ||
-                    item.title?.toLowerCase().includes(term) ||
-                    item.serial?.toLowerCase().includes(term) ||
-                    (item.director?.name || item.director?.names || "").toLowerCase().includes(term) ||
-                    (item.productionCompany?.name || "").toLowerCase().includes(term);
+            const itemType = item.type?.name || item.type || "";
+            const matchesType = !selectedType || itemType === selectedType;
 
-                const itemType = item.type?.name || item.type || "";
-                const matchesType = !selectedType || itemType === selectedType;
+            const itemGenres = Array.isArray(item.genres)
+                ? item.genres.map((g) => g.genre?.name || g.name || g)
+                : Array.isArray(item.genreNames)
+                    ? item.genreNames
+                    : [];
+            const matchesGenre = !selectedGenre || itemGenres.includes(selectedGenre);
 
-                const itemGenres = Array.isArray(item.genres)
-                    ? item.genres.map((g) => g.genre?.name || g.name || g)
-                    : Array.isArray(item.genreNames)
-                        ? item.genreNames
-                        : [];
-                const matchesGenre = !selectedGenre || itemGenres.includes(selectedGenre);
-
-                return matchesText && matchesType && matchesGenre;
-            });
-    }, [media, catalogs, searchTerm, selectedType, selectedGenre]);
+            return matchesText && matchesType && matchesGenre;
+        });
+    }, [enrichedMedia, searchTerm, selectedType, selectedGenre]);
 
     return {
         filteredMedia,
+        stats,
         loading,
         error,
         catalogs,

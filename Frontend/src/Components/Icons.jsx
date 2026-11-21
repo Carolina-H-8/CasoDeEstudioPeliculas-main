@@ -62,26 +62,22 @@ export function PlusIcon({ className = "w-5 h-5" }) {
 
 export function MovieIcon({ className = "w-5 h-5" }) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
             className={className}
-        >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" />
-            <path d="M8 4l0 16" />
-            <path d="M16 4l0 16" />
-            <path d="M4 8l4 0" />
-            <path d="M4 16l4 0" />
-            <path d="M4 12l16 0" />
-            <path d="M16 8l4 0" />
-            <path d="M16 16l4 0" />
-        </svg>
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4" />
+        <path d="M3 8a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2l0 -8" />
+      </svg>
     );
 }
 
@@ -159,3 +155,32 @@ export function SearchIcon({ className = "w-5 h-5" }) {
         </svg>
     );
 }
+
+export function SerieIcon({ className = "w-5 h-5" }){
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        className={className}
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" />
+        <path d="M8 4l0 16" />
+        <path d="M16 4l0 16" />
+        <path d="M4 8l4 0" />
+        <path d="M4 16l4 0" />
+        <path d="M4 12l16 0" />
+        <path d="M16 8l4 0" />
+        <path d="M16 16l4 0" />
+      </svg>
+    );
+
+}
+   

@@ -19,18 +19,18 @@ const COLUMNS = [
 
 export default function Media() {
 
-    const { filteredMedia, loading, error, catalogs, filters, modal } = useMediaPage();
+    const { filteredMedia, loading, error, catalogs, filters, modal,stats } = useMediaPage();
 
 
     return (
         <div className="w-full max-w-7xl flex flex-col  ">
             <main className="w-full flex flex-col gap-8">
                 <PageInfo
-                    title={"REPOSITORIO DIGITAL INSTITUCIONAL"}
-                    name={"Gestión de Media"}
-                    text={
-                        "Catálogo audiovisual de películas, series y producciones académicas de la IU Digital de Antioquia."
-                    }
+                    badge="REPOSITORIO DIGITAL INSTITUCIONAL"
+                    title="Gestión de Media"
+                    description="Catálogo audiovisual de películas, series y producciones académicas de la IU Digital de Antioquia."
+                    peliculasCount={stats.peliculas}
+                    seriesCount={stats.series}
                 />
                 <Search
                     placeholder="Buscar por título, serial, director..."
