@@ -4,12 +4,18 @@ import express from 'express';
 import routes from './routes/index.js';
 import cors from "cors"
 
-
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const allowedOrigins = [
+    'http://localhost:5173',
+    process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
-    origin: "http://localhost:5173"
+    origin: allowedOrigins,
 }));
+
 app.use(express.json());
 
 // Ruta principal
@@ -22,6 +28,6 @@ app.get('/', (req, res) => {
 // Rutas de la API
 app.use('/api', routes);
 
-app.listen(PORT, () => {
-    console.log(`Servidor escuchando en http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
 });

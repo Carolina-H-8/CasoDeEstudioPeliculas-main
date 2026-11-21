@@ -1,6 +1,5 @@
 // src/services/genreService.js
-const API_URL = 'http://localhost:3000/api'; 
-
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 export const getGenres = async () => {
   try {
     const response = await fetch(`${API_URL}/genres`); 
