@@ -1,7 +1,7 @@
-const APIURL = "http://localhost:3000/api"
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 export const getAllMedia = async()=>{
-    const response = await fetch (`${APIURL}/media`);
+    const response = await fetch (`${API_URL}/media`);
     if(!response.ok){
         throw new Error("Error al obtener catalogo de media");
     }
@@ -10,7 +10,7 @@ export const getAllMedia = async()=>{
 }
 
 export const createMedia = async (mediaData)=>{
-    const response = await fetch(`${APIURL}/media`,{
+    const response = await fetch(`${API_URL}/media`,{
         method :"POST",
         headers:{
             "Content-Type":"application/json",
@@ -24,7 +24,7 @@ export const createMedia = async (mediaData)=>{
 }
 
 export const updateMedia = async (id, mediaData) => {
-    const response = await fetch(`${APIURL}/media/${id}`, {
+    const response = await fetch(`${API_URL}/media/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export const updateMedia = async (id, mediaData) => {
 };
 
 export const deleteMedia = async (id) => {
-    const response = await fetch(`${APIURL}/media/${id}`, {
+    const response = await fetch(`${API_URL}/media/${id}`, {
         method: "DELETE",
     });
     if (!response.ok) {
